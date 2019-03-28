@@ -21,20 +21,20 @@ class Cards(object):
                            '8-方块-6',   '8-梅花-6',   '8-红桃-6',    '8-黑桃-6',
                            '9-方块-7',   '9-梅花-7',   '9-红桃-7',    '9-黑桃-7',
                            '10-方块-8',  '10-梅花-8',  '10-红桃-8',   '10-黑桃-8',
-                           'j-方块-9',   'j-梅花-9',   'j-红桃-9',    'j-黑桃-9',
+                           'J-方块-9',   'J-梅花-9',   'J-红桃-9',    'J-黑桃-9',
                            'Q-方块-10',  'Q-梅花-10',  'Q-红桃-10',   'Q-黑桃-10',
                            'K-方块-11',  'K-梅花-11',  'K-红桃-11',   'K-黑桃-11',
                            'w-小王-14',  'W-大王-15']
 
-    def get_cards(self):
+    def GetCards(self):
         cards = []
         for card_type in self.cards_type:
             cards.append(Card(card_type))
         random.shuffle(cards)
         return cards
 
-    def deal_poker(self):
-        cards = self.get_cards()
+    def DealPoker(self):
+        cards = self.GetCards()
         card_groups = [[], [], []]
         landlord_cards = []
         for i in xrange(17):

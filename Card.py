@@ -16,8 +16,13 @@ class Card(object):
         self.rank = int(self.card_type.split('-')[2])
         
     #判断大小
-    def bigger_than(self, card):
-        return self.rank > card.rank
+    def __cmp__(self, other):
+        if self.rank < other.rank:
+            return -1
+        elif self.rank > other.rank:
+            return 1
+        else:
+            return 0
 
     def __str__(self):
         return '(Card: %s, %s)' % (self.color, self.name)
