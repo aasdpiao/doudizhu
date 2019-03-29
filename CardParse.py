@@ -1,8 +1,9 @@
 # -*- coding:UTF-8 -*-
-class CardData(object):
+class CardParse(object):
 
     def __init__(self):
         self.cards = []
+        self.card_node = []
 
     def SetCardData(self,cards):
         self.cards = cards
@@ -40,13 +41,38 @@ class CardData(object):
     def GetKingCount(self):
         pass
 
+    def CalucalateCallSocre(self):
+        pass
 
-class CardParse(CardData):
-    """
-    一副扑克牌类,54张排,abcd四种花色,小王14-a,大王15-a
-    """
-    def __init__(self):
-        self.__cards = []
+    def ParseHandCardInfo(self, first_out_card):
+        self.ParseHandCardData()
+        self.GetOutCardNoteList()
+        self.ParseOutCardProgress(first_out_card)
+
+    #分析手中的牌数据
+    def ParseHandCardData(self):
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        cards = filter(lambda card: card.GetName() != "2", self.cards)  #去掉2
+        self.CardParse_Bomb(cards)
+        self.CounterScore()
+        for card in cards:
+            print(card)
+
+
+    def GetOutCardNoteList(self):
+        pass
+
+    def ParseOutCardProgress(self, first_out_card):
+        pass
+
+    def CounterScore(self):
+        pass
+
+    def CardParse_Bomb(self,cards):
+        NextCardCount = 0
+        iTempCount = 0
+        BombCount = 0
+        while(self.GetLinkProgress(cards,0,4,1)):
 
 
     def GetLinkProgress(self,cards,refer_card,same_count,card_count):
@@ -137,10 +163,4 @@ class CardParse(CardData):
     def IsThreeTakeOne(self):
         pass
 
-
-#记牌器
-class CardCounter(CardParse):
-
-    def __init__(self):
-        pass
 

@@ -2,6 +2,7 @@
 ############################################
 #              玩家类                      #
 ############################################
+from CardParse import CardParse
 
 class Player(object):
     def __init__(self):
@@ -67,8 +68,12 @@ class Player(object):
     def CanFollowCard(self):
         pass
 
+    def ParseHandCardInfo(self):
+        card_parse = CardParse()
+        card_parse.SetCardData(self.cards)
+        card_parse.ParseHandCardData()
     #打印手牌
     def WriteHandCardList(self):
-        print("=================================player",self.desk_station ,"=================================")
+        print("=================================player", self.desk_station, "=================================")
         for card in self.cards:
             print(card)

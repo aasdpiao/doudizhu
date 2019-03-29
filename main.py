@@ -16,5 +16,7 @@ if __name__ == "__main__":
     print("===========================landlord_cards=======================")
     for x in landlord_cards:
         print(x)
+    for player in players:
+        player.ParseHandCardInfo()
 
 

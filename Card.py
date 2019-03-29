@@ -26,3 +26,12 @@ class Card(object):
 
     def __str__(self):
         return '(Card: %s, %s)' % (self.color, self.name)
+
+    def GetName(self):
+        return self.name
+
+    def GetColor(self):
+        return self.color
+
+    def GetRank(self):
+        return self.rank

@@ -30,5 +30,10 @@ OT = Enum('OT', (
     'CARDTYPE_SINGLECARD',
     'CARDTYPE_MAX'))
 
+RobotID = Enum('RobotID', (
+    'ROBOT_ID_NEXTFARMER',
+    'ROBOT_ID_PREFARMER',
+    'ROBOT_ID_LANDLORD'
+))
 
 
