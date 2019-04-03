@@ -29,6 +29,7 @@ class Match(object):
         card_group, landlord_cards = cards.DealPoker()
         for i, player in enumerate(self.players):
             player.SetCardList(card_group[i])
+            player.ParseHandCardInfo()
             player.WriteHandCardList()
         print("===========================landlord_cards=======================")
         ShowCard(landlord_cards)
