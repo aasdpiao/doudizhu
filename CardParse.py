@@ -73,7 +73,7 @@ class CardParse(object):
         iTempCount = 0
         BombCount = 0
         while(self.GetLinkProgress(cards,0,4,1)):
-
+            pass
 
     def GetLinkProgress(self,cards,refer_card,same_count,card_count):
         pass

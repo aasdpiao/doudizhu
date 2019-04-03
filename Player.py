@@ -15,12 +15,19 @@ class Player(object):
             print(card)
         return str
 
+    #设置下一个出牌的玩家
+    def SetNextPlayer(self,next_player):
+        self.next_player = next_player
+
+    def GetNextPlayer(self):
+        return self.next_player
+
     #设置出牌方向
     def SetDirection(self):
         pass
 
     #设置自己的座位号
-    def SetSelfDeskStation(self, desk_station):
+    def SetDeskStation(self, desk_station):
         self.desk_station = desk_station
 
     #设置手上牌数据 游戏开始
@@ -74,6 +81,12 @@ class Player(object):
         card_parse.ParseHandCardData()
     #打印手牌
     def WriteHandCardList(self):
-        print("=================================player", self.desk_station, "=================================")
+        card_info = "["
         for card in self.cards:
-            print(card)
+            card_info += (card.color + card.name + " ")
+        card_info += "]"
+        print(card_info)
+
+    def AddBottomCardList(self):
+        pass
+
