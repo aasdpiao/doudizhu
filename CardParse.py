@@ -132,45 +132,10 @@ class CardParse(object):
         pass
 
     def CounterScore(self):
-        # int Res=-100000;
-        # while(pNode!=NULL)
-        # {
-        #     if (pNode->next!=NULL)
-        #     {
-        #         pNode->mScore=CounterScore(pNode->next);
-        #     }
-        #     if (pNode->mCardType==CARDTYPE_NODE_PAIR)
-        #     {
-        #         int NodeCount=0,CurScore=0;
-        #         CardNodePtr CurNode=pNode;
-        #         while(CurNode!=NULL)
-        #         {
-        #             CurScore+=CounterScoreByCardType(CurNode->mCardType,CurNode->bCardList,CurNode->mCardCount);
-        #             NodeCount++;
-        #             CurNode=CurNode->right;
-        #         }
-        #         if (NodeCount>0)
-        #         {
-        #             //pNode->mScore+=CurScore/(NodeCount*0.5);
-        #             pNode->mScore+=CurScore/2;
-        #             Res=pNode->mScore;
-        #             break;
-        #         }
-        #     }
-        #     else
-        #     {
-        #         pNode->mScore+=CounterScoreByCardType(pNode->mCardType,pNode->bCardList,pNode->mCardCount);
+        pass
 
-        #         if (Res<pNode->mScore)
-        #         {
-        #             Res=pNode->mScore;
-        #         }
-
-        #         pNode=pNode->right;
-        #     }
-        # }
-        # return Res;    
-        Res=-100000
+    def CalucalateScore_Single(self):
+        
 
 
     def Remove_Cards(self,cards):
