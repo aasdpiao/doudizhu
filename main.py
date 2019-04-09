@@ -3,6 +3,6 @@
 import Common
 
 if __name__ == "__main__":
-    print(CARD.CARD_3)
+    print(CARDVALUE.CARD_3)
 
 
