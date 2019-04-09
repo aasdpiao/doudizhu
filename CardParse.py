@@ -16,23 +16,6 @@ class CardParse(object):
         self.card_node[CardType.NODE_PAIR] = []
         self.card_node[CardType.NODE_SINGLECARD] = []
 
-        #出牌信息
-        self.dan = []
-        self.dui = []
-        self.san = []
-        self.san_dai_yi = []
-        self.san_dai_er = []
-        self.bomb = []
-        self.shunzi = []
-        
-        #牌数量信息
-        self.card_num_info = {}
-        #牌顺序信息,计算顺子
-        self.card_order_info = []
-        #王牌信息
-        self.king = []
-
-
     def SetCardData(self,cards):
         self.cards = cards
 
