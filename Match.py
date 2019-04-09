@@ -11,7 +11,7 @@ class Match(object):
         self.end = False
         self.last_move = "start"
         self.players = []
-        self.game_status = 0   #游戏  抢地主  出牌  结算
+        self.game_status = 0   #游戏开始  抢地主  出牌  结算
 
     def GameInit(self):
         for i in range(3):
@@ -30,14 +30,15 @@ class Match(object):
         for i, player in enumerate(self.players):
             player.SetCardList(card_group[i])
             player.WriteHandCardList()
+            player.ParseHandCardInfo()
         print("===========================landlord_cards=======================")
         ShowCard(landlord_cards)
         self.game_status = 1
-        while self.game_status == 1:
-            if self.landlord.CallLandlord():
-                self.game_status = 2
-                self.landlord.AddBottomCardList(landlord_cards)
-            self.landlord = self.landlord.GetNextPlayer()
+        # while self.game_status == 1:
+        #     if self.landlord.CallLandlord():
+        #         self.game_status = 2
+        #         self.landlord.AddBottomCardList(landlord_cards)
+        #     self.landlord = self.landlord.GetNextPlayer()
 
 
 if __name__ == "__main__":

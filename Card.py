@@ -14,6 +14,8 @@ class Card(object):
         self.color = self.card_type.split('-')[1]
         #大小
         self.rank = int(self.card_type.split('-')[2])
+        #编号
+        self.index = int(self.card_type.split('-')[3])
         
     #判断大小
     def __cmp__(self, other):
@@ -35,3 +37,6 @@ class Card(object):
 
     def GetRank(self):
         return self.rank
+
+    def GetIndex(self):
+        return self.index

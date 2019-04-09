@@ -7,8 +7,8 @@ class CardType(Enum):
     NODE_BOMB = 2             #炸弹
     NODE_THREEPROGRESS = 3    #飞机
     NODE_PROGRESS = 4         #顺子
-    NODE_LINKPAIR = 5         #连对
-    NODE_THREEITEM = 6        #3带1
+    NODE_THREEITEM = 5        #3带1
+    NODE_LINKPAIR = 6         #连对
     NODE_PAIR = 7             #对子
     NODE_SINGLECARD = 8       #单张
     NODE_MAX = 9
