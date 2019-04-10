@@ -60,9 +60,9 @@ class Player(object):
     def CalucalateCallSocre(self):
         Res = 0
         BombCount = self.GetBombCount()
-        if BombCount > 0：
+        if BombCount > 0:
             Res += BombCount * 8 + math.power(2.0,BombCount-1) * 6
-        card_node = 
+        return Res
 
     #叫分
     def CallScore(self):
@@ -95,7 +95,7 @@ class Player(object):
                     else:
                         res = 1
                 else:
-                    if Score >= 30：
+                    if Score >= 30:
                         res = 3
                     elif Score >= 15:
                         res = 2

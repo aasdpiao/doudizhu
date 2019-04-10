@@ -135,8 +135,7 @@ class CardParse(object):
         pass
 
     def CalucalateScore_Single(self):
-        
-
+        pass
 
     def Remove_Cards(self,cards):
         self.cards = list(filter(lambda card: card.index not in [card.index for card in cards], self.cards))
