@@ -3,6 +3,8 @@
 #              玩家类                      #
 ############################################
 from CardParse import CardParse
+from Common import CARDVALUE
+import math
 
 class Player(object):
     def __init__(self):
@@ -55,12 +57,129 @@ class Player(object):
     def AddCardList(self):
         pass
 
+    def CalucalateCallSocre(self):
+        Res = 0
+        BombCount = self.GetBombCount()
+        if BombCount > 0：
+            Res += BombCount * 8 + math.power(2.0,BombCount-1) * 6
+        card_node = 
+
     #叫分
     def CallScore(self):
-        pass
+        res = 0
+        Score = self.CalucalateCallSocre()
+        Card2Count = self.GetCardValueCount(CARDVALUE.CARD_2)
+        KingCount = self.GetKingCount()
+        if KingCount == 2:
+            if Card2Count > 0:
+                if Score >= 15:
+                    res = 3
+                elif Score >= 10:
+                    res = 2
+                else:
+                    res = 1
+            else:
+                if Score >= 20:
+                    res = 3
+                elif Score >= 15:
+                    res = 2
+                else:
+                    res = 1
+        elif KingCount == 1:
+            if self.HaveBigKing():
+                if Card2Count > 0:
+                    if Score >= 20:
+                        res = 3
+                    elif Score >= 15:
+                        res = 2
+                    else:
+                        res = 1
+                else:
+                    if Score >= 30：
+                        res = 3
+                    elif Score >= 15:
+                        res = 2
+                    else:
+                        res = 1
+            else:
+                if Card2Count > 0:
+                    if Score >= 25:
+                        res = 3
+                    elif Score >= 20:
+                        res = 2
+                    else:             
+                        res = 1
+                else:
+                    if Score >= 30:
+                        res = 3
+                    elif Score >= 25:
+                        res = 2
+                    else:
+                        res = 1
+        else:
+            if Card2Count == 4:
+                if Score >= 20:
+                    res = 3
+                elif Score >= 15:
+                    res = 2
+                else:
+                    res = 1
+            elif Card2Count == 3:
+                if Score >= 30:
+                    res = 3
+                elif Score >= 20:
+                    res = 2
+                else:
+                    res = 1
+            elif Card2Count == 2:
+                if Score >= 25:
+                    res = 2
+                elif Score >= 20:
+                    res = 1
+            elif Card2Count == 1:
+                if Score >= 30:
+                    res = 2
+                elif Score >= 20:
+                    res = 1
+            else:
+                if Score >= 30:
+                    res = 1
+        return res
 
     #叫地主
     def CallLandlord(self):
+        # int KingCount=m_CardData.GetKingCount();//王的个数
+        # int Card2Count=m_CardData.GetCardValueCount(CARD_2);
+        # if (CurScore==0)
+        # {
+        #     if (m_CallScore>1||KingCount>0||Card2Count>=2)
+        #     {
+        #         return 1;
+        #     }
+        # }
+        # else if (CurScore==1)
+        # {
+        #     if (m_CallScore>2||m_CallScore==2&&(KingCount>0||Card2Count>2))
+        #     {
+        #         return 1;
+        #     }
+        # }
+        # else if (CurScore==2)
+        # {
+        #     if (m_CallScore>2&&KingCount>0||m_CallScore==2&&(KingCount>1||KingCount>0&&Card2Count>=2))
+        #     {
+        #         return 1;
+        #     }
+        # }
+        # else 
+        # {
+        #     if (m_CallScore>2&&KingCount>0&&(m_CardData.HaveBigKing()||Card2Count>1))
+        #     {
+        #         return 1;
+        #     }
+        # }
+
+        # return 0;
         pass
 
     #是否加倍
