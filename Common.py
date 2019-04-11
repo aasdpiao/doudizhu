@@ -2,7 +2,7 @@
 from enum import Enum
 
 #基本牌型
-class CardType(Enum):
+class CARDTYPE(Enum):
     NODE_BOMB_TWO = 1         #王炸
     NODE_BOMB = 2             #炸弹
     NODE_THREEPROGRESS = 3    #飞机

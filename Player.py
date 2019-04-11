@@ -3,7 +3,7 @@
 #              玩家类                      #
 ############################################
 from CardParse import CardParse
-from Common import CARDVALUE
+from Common import CARDVALUE,CARDTYPE
 import math
 
 class Player(object):
@@ -198,6 +198,24 @@ class Player(object):
         card_parse = CardParse()
         card_parse.SetCardData(self.cards)
         card_parse.ParseHandCardData()
+
+    def ParseHandCardData(self):
+        card_parse = CardParse()
+        card_parse.SetCardData(self.cards)
+        card_parse.ParseHandCardData()
+        self.GetOutCardNoteList(card_parse)
+
+    def GetOutCardNoteList(self,card_parse):
+        bombNode = card_parse.GetCardNodeList(CARDTYPE.NODE_BOMB)
+        threeprogressNode = card_parse.GetCardNodeList(CARDTYPE.NODE_THREEPROGRESS)
+        progressNode = card_parse.GetCardNodeList(CARDTYPE.NODE_PROGRESS)
+        threeitemNode = card_parse.GetCardNodeList(CARDTYPE.NODE_THREEITEM)
+        linkpairNode = card_parse.GetCardNodeList(CARDTYPE.NODE_LINKPAIR)
+        pairNode = card_parse.GetCardNodeList(CARDTYPE.NODE_PAIR)
+        singlecardNode = card_parse.GetCardNodeList(CARDTYPE.NODE_SINGLECARD)
+        Count = 0
+        
+
     #打印手牌
     def WriteHandCardList(self):
         card_info = "["

@@ -1,20 +1,20 @@
 # -*- coding:UTF-8 -*-
 from CardNode import CardNode
-from Common import CardType
+from Common import CARDTYPE
 
 class CardParse(object):
 
     def __init__(self):
         self.cards = {}
         self.card_node = {}
-        self.card_node[CardType.NODE_BOMB_TWO] = []
-        self.card_node[CardType.NODE_BOMB] = []
-        self.card_node[CardType.NODE_THREEPROGRESS] = []
-        self.card_node[CardType.NODE_PROGRESS] = []
-        self.card_node[CardType.NODE_LINKPAIR] = []
-        self.card_node[CardType.NODE_THREEITEM] = []
-        self.card_node[CardType.NODE_PAIR] = []
-        self.card_node[CardType.NODE_SINGLECARD] = []
+        self.card_node[CARDTYPE.NODE_BOMB_TWO] = []
+        self.card_node[CARDTYPE.NODE_BOMB] = []
+        self.card_node[CARDTYPE.NODE_THREEPROGRESS] = []
+        self.card_node[CARDTYPE.NODE_PROGRESS] = []
+        self.card_node[CARDTYPE.NODE_LINKPAIR] = []
+        self.card_node[CARDTYPE.NODE_THREEITEM] = []
+        self.card_node[CARDTYPE.NODE_PAIR] = []
+        self.card_node[CARDTYPE.NODE_SINGLECARD] = []
 
     def SetCardData(self,cards):
         self.cards = cards
@@ -144,15 +144,15 @@ class CardParse(object):
         self.CardPerser()
         if len(self.king) == 2:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_BOMB_TWO)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_BOMB_TWO)
             card_node.SetCards(self.king)
-            self.card_node[CardType.NODE_BOMB_TWO].append(card_node)
+            self.card_node[CARDTYPE.NODE_BOMB_TWO].append(card_node)
             self.Remove_Cards(self.king)
         for bomb in self.bomb:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_BOMB)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_BOMB)
             card_node.SetCards(bomb)
-            self.card_node[CardType.NODE_BOMB].append(card_node)
+            self.card_node[CARDTYPE.NODE_BOMB].append(card_node)
             self.Remove_Cards(bomb)
 
     def CardParse_ThreeProgress(self):
@@ -164,9 +164,9 @@ class CardParse(object):
             if cards[0].rank -1 != progress:
                 if count >= 2:
                     card_node = CardNode()
-                    card_node.SetCardType(CardType.NODE_THREEPROGRESS)
+                    card_node.SetCARDTYPE(CARDTYPE.NODE_THREEPROGRESS)
                     card_node.SetCards(threeprogress)
-                    self.card_node[CardType.NODE_THREEPROGRESS].append(card_node)
+                    self.card_node[CARDTYPE.NODE_THREEPROGRESS].append(card_node)
                     self.Remove_Cards(threeprogress)
                 threeprogress = []
                 progress = cards[0].rank
@@ -178,9 +178,9 @@ class CardParse(object):
                 threeprogress.extend(cards)
         if count >= 2:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_THREEPROGRESS)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_THREEPROGRESS)
             card_node.SetCards(threeprogress)
-            self.card_node[CardType.NODE_THREEPROGRESS].append(card_node)
+            self.card_node[CARDTYPE.NODE_THREEPROGRESS].append(card_node)
             self.Remove_Cards(threeprogress) 
 
     def CardParse_Progress(self):
@@ -194,26 +194,26 @@ class CardParse(object):
             else:
                 if len(progress) >= 5:
                     card_node = CardNode()
-                    card_node.SetCardType(CardType.NODE_PROGRESS)
+                    card_node.SetCARDTYPE(CARDTYPE.NODE_PROGRESS)
                     card_node.SetCards(progress)
-                    self.card_node[CardType.NODE_PROGRESS].append(card_node)
+                    self.card_node[CARDTYPE.NODE_PROGRESS].append(card_node)
                     self.Remove_Cards(progress) 
                 progress = [card]
         #最后一轮
         if len(progress) >= 5:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_PROGRESS)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_PROGRESS)
             card_node.SetCards(progress)
-            self.card_node[CardType.NODE_PROGRESS].append(card_node)
+            self.card_node[CARDTYPE.NODE_PROGRESS].append(card_node)
             self.Remove_Cards(progress)  
 
     def CardParse_ThreeItem(self):
         self.CardPerser()
         for cards in self.san:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_THREEITEM)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_THREEITEM)
             card_node.SetCards(cards)
-            self.card_node[CardType.NODE_THREEITEM].append(card_node)
+            self.card_node[CARDTYPE.NODE_THREEITEM].append(card_node)
             self.Remove_Cards(cards)
 
     def CardParse_LinkPair(self):
@@ -225,9 +225,9 @@ class CardParse(object):
             if cards[0].rank -1 != progress:
                 if count >= 3:
                     card_node = CardNode()
-                    card_node.SetCardType(CardType.NODE_LINKPAIR)
+                    card_node.SetCARDTYPE(CARDTYPE.NODE_LINKPAIR)
                     card_node.SetCards(linkpair)
-                    self.card_node[CardType.NODE_LINKPAIR].append(card_node)
+                    self.card_node[CARDTYPE.NODE_LINKPAIR].append(card_node)
                     self.Remove_Cards(linkpair)
                 linkpair = []
                 progress = cards[0].rank
@@ -239,28 +239,32 @@ class CardParse(object):
                 linkpair.extend(cards)
         if count >= 3:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_LINKPAIR)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_LINKPAIR)
             card_node.SetCards(linkpair)
-            self.card_node[CardType.NODE_LINKPAIR].append(card_node)
+            self.card_node[CARDTYPE.NODE_LINKPAIR].append(card_node)
             self.Remove_Cards(linkpair)
 
     def CardParse_Pair(self):
         self.CardPerser()
         for cards in self.dui:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_PAIR)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_PAIR)
             card_node.SetCards(cards)
-            self.card_node[CardType.NODE_PAIR].append(card_node)
+            self.card_node[CARDTYPE.NODE_PAIR].append(card_node)
             self.Remove_Cards(cards)
 
     def CardParse_SingleCard(self):
         self.CardPerser()
         for cards in self.dan:
             card_node = CardNode()
-            card_node.SetCardType(CardType.NODE_SINGLECARD)
+            card_node.SetCARDTYPE(CARDTYPE.NODE_SINGLECARD)
             card_node.SetCards(cards)
-            self.card_node[CardType.NODE_SINGLECARD].append(card_node)
+            self.card_node[CARDTYPE.NODE_SINGLECARD].append(card_node)
             self.Remove_Cards(cards) 
+
+    def GetCardNodeList(self,CARDTYPE):
+        return self.card_node.get(CARDTYPE,[])
+
 
     #获取最长的顺子
     def GetLongProgress(self):
@@ -285,10 +289,10 @@ class CardParse(object):
         pass
 
     def HaveBomb(self):
-        return len(self.card_node[CardType.NODE_BOMB]) > 0
+        return len(self.card_node[CARDTYPE.NODE_BOMB]) > 0
 
     def HaveKingBomb(self):
-        return len(self.card_node[CardType.NODE_BOMB_TWO]) == 1
+        return len(self.card_node[CARDTYPE.NODE_BOMB_TWO]) == 1
 
     def IsOnlyBigCard(self):
         pass
