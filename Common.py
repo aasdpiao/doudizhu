@@ -35,6 +35,7 @@ class POSITION(Enum):
     NEXTFARMER = 1            #下一个是农民
     PREFARMER = 2             #上一个是农民
     LANDLORD = 3              #地主
+    DEFAULT = 4
 
 
 class CARDKIND(Enum):
@@ -60,7 +61,6 @@ class CARDVALUE(Enum):
     CARD_w = 14,
     CARD_W = 15,
 
-
 def ShowCard(cards):
     card_info = "["
     for card in cards:
@@ -72,5 +72,24 @@ def ShowCard(cards):
 def GetCardValueKind(card):
     rank = card.rank
     return rank
+
+def GetCardNameByValue(card_type):
+    card_names = {}
+    card_names[CARDVALUE.CARD_3] = '3'
+    card_names[CARDVALUE.CARD_4] = '4'
+    card_names[CARDVALUE.CARD_5] = '5'
+    card_names[CARDVALUE.CARD_6] = '6'
+    card_names[CARDVALUE.CARD_7] = '7'
+    card_names[CARDVALUE.CARD_8] = '8'
+    card_names[CARDVALUE.CARD_9] = '9'
+    card_names[CARDVALUE.CARD_10] = '10'
+    card_names[CARDVALUE.CARD_J] = 'J'
+    card_names[CARDVALUE.CARD_Q] = 'Q'
+    card_names[CARDVALUE.CARD_K] = 'K'
+    card_names[CARDVALUE.CARD_A] = 'A'
+    card_names[CARDVALUE.CARD_2] = '2'
+    card_names[CARDVALUE.CARD_w] = 'w'
+    card_names[CARDVALUE.CARD_W] = 'W'
+    return card_names.get(card_type)
 
 

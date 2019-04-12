@@ -25,16 +25,19 @@ class Cards(object):
                            'Q-方块-10-12',  'Q-梅花-10-25',  'Q-红桃-10-38',   'Q-黑桃-10-51',
                            'K-方块-11-13',  'K-梅花-11-26',  'K-红桃-11-39',   'K-黑桃-11-52',
                            'w-小王-14-53',  'W-大王-15-54']
+        self.cards = []
+        for card_type in self.cards_type:
+            self.cards.append(Card(card_type))
 
     def GetCards(self):
         cards = []
         for card_type in self.cards_type:
             cards.append(Card(card_type))
-        random.shuffle(cards)
         return cards
 
     def DealPoker(self):
         cards = self.GetCards()
+        random.shuffle(cards)
         card_groups = [[], [], []]
         landlord_cards = []
         for i in xrange(17):

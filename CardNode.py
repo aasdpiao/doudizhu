@@ -15,8 +15,12 @@ class CardNode(object):
         self.cards.extend(cards)
         self.card_count = len(set([card.rank for card in cards]))
 
-    def SetCARDTYPE(self,card_type):
+    def SetCardType(self,card_type):
         self.card_type = card_type
+
+    #获取牌型开始的那个牌
+    def GetCardValue(self):
+        return self.cards[0]
 
     def GetCardScore(self):
         if self.card_type == CARDTYPE.NODE_BOMB_TWO:

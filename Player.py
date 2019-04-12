@@ -3,13 +3,20 @@
 #              玩家类                      #
 ############################################
 from CardParse import CardParse
-from Common import CARDVALUE,CARDTYPE
+from Cards import Cards
+from OutCard import OutCard
+from Common import CARDVALUE,CARDTYPE,POSITION,ShowCard
+from CardCounter import CardCounter
 import math
 
 class Player(object):
     def __init__(self):
         self.cards = []
         self.desk_station = 0
+        self.robotId = POSITION.DEFAULT
+        self.OutCard = OutCard()
+        self.CardCounter = CardCounter()
+        self.CardParse = CardParse()
 
     def __str__(self):
         str = ""
@@ -24,6 +31,9 @@ class Player(object):
     def GetNextPlayer(self):
         return self.next_player
 
+    def SetRobotId(self,robotId):
+        self.robotId = robotId
+
     #设置出牌方向
     def SetDirection(self):
         pass
@@ -36,6 +46,16 @@ class Player(object):
     def SetCardList(self, cards):
         self.cards = cards
         self.cards.sort()
+        self.SetCardCounter()
+        self.CardParse = CardParse()
+        self.CardParse.SetCardData(self.cards)
+        self.CardParse.ParseHandCardData()
+
+    def SetCardCounter(self):
+        cards = Cards()
+        card_list = cards.GetCards()
+        counter = [card for card in card_list if card.index not in [x.index for x in self.cards]]
+        self.CardCounter.SetCardData(counter)
 
     #获取手中的牌
     def GetHandCardList(self):
@@ -195,9 +215,7 @@ class Player(object):
         pass
 
     def ParseHandCardInfo(self):
-        card_parse = CardParse()
-        card_parse.SetCardData(self.cards)
-        card_parse.ParseHandCardData()
+        pass
 
     def ParseHandCardData(self):
         card_parse = CardParse()
@@ -215,6 +233,33 @@ class Player(object):
         singlecardNode = card_parse.GetCardNodeList(CARDTYPE.NODE_SINGLECARD)
         Count = 0
         
+    def FillOutCardNoteList(self):
+        self.CheckBigNode()
+
+    def CheckBigNode(self,card_parse):
+        card_node = card_parse.GetCardNodeDict()
+        for card_type,card_node_list in card_node.items():
+            bigest_node = card_node_list[-1]
+            if not bigest_node:
+                continue
+            if self.CheckBigest(card_node,card_type,card_parse):
+                self.OutCard.SetWin(card_type,True)
+                self.OutCard.ExitBig(card_type,True)
+
+    def CheckBigest(self,card_node,card_type,card_parse):
+        if card_type == CARDTYPE.NODE_BOMB:
+            if card_parse.HaveKingBomb():
+                return True
+            if self.CardCounter.HaveKingBomb():
+                return False
+            if self.CardCounter.GetCardValueCount(CARDNAME.CARD_2) == 4:
+                return False
+            max_node = self.CardCounter.GetMaxCardNode(CARDTYPE.NODE_BOMB)
+            if card_node.GetCardValue().rank < max_node.GetCardValue().rank:
+                return False
+            return True
+        elif card_type == CARDTYPE.CARDTYPE_NODE_THREEPROGRESS:
+            pass
 
     #打印手牌
     def WriteHandCardList(self):

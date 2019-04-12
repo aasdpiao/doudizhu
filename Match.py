@@ -30,7 +30,6 @@ class Match(object):
         for i, player in enumerate(self.players):
             player.SetCardList(card_group[i])
             player.WriteHandCardList()
-            player.ParseHandCardInfo()
         print("===========================landlord_cards=======================")
         ShowCard(landlord_cards)
         self.game_status = 1
