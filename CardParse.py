@@ -64,6 +64,10 @@ class CardParse(object):
             return
         return card_node[-1]
 
+    def GetCardNodeCount(self,card_type):
+        card_node = self.card_node.get(card_type,[])
+        return len(card_node)
+
     #分析手中的牌数据
     def ParseHandCardData(self):
         self.CardParse_Bomb()

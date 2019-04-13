@@ -17,6 +17,7 @@ class Player(object):
         self.OutCard = OutCard()
         self.CardCounter = CardCounter()
         self.CardParse = CardParse()
+        self.HandCardCount = 0
 
     def __str__(self):
         str = ""
@@ -46,6 +47,7 @@ class Player(object):
     def SetCardList(self, cards):
         self.cards = cards
         self.cards.sort()
+        self.HandCardCount = len(cards)
         self.SetCardCounter()
         self.CardParse = CardParse()
         self.CardParse.SetCardData(self.cards)
@@ -271,5 +273,8 @@ class Player(object):
 
     def AddBottomCardList(self):
         pass
+
+    def GetOutCardList_First(self):
+        if self.HandCardCount 
 
         
