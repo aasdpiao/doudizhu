@@ -275,6 +275,6 @@ class Player(object):
         pass
 
     def GetOutCardList_First(self):
-        if self.HandCardCount 
-
+        if self.HandCardCount * 4 == self.CardParse.GetCardNodeCount(CARDTYPE.NODE_BOMB)
+        
         
