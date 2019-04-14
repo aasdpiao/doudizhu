@@ -29,11 +29,27 @@
 
 # BYTE m_OutCardDrection;  //出牌方向 1：逆时针  2：顺时针  默认逆时针
 # CCardParse    m_CardData;
+from Common import POSITION
 
 class GuessCarder(object):
-	def __init__(self):
+	def __init__(self,player):
+		self.player = player
 		self.SelfDeskStation = 0
 		self.Landlorder = 0
 		self.NextGuessObject = 0 
 		self.LastGuessObject = 0
- 
+
+	def SetPlayerID(self,landlord,nextplayer,lastplayer):
+		self.landlord = landlord
+		self.LastGuessObject = lastplayer
+		self.NextGuessObject = nextplayer
+
+	def GetRivalHandCardCount(self):
+		if self.player.GetRobotId() == POSITION.LANDLORD:
+			count1 = self.NextGuessObject.GetCardsCount()
+			count2 = self.LastGuessObject.GetCardsCount()
+			return count1 if count1 > count2 else count2
+		elif self.player.GetRobotId() == POSITION.NEXTFARMER or self.player.GetRobotId() == POSITION.PREFARMER:
+			return self.Landlorder.GetCardsCount()
+		else:
+			return 0

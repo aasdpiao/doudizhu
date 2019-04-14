@@ -40,3 +40,9 @@ class Card(object):
 
     def GetIndex(self):
         return self.index
+
+    def GetCardValue(self):
+        if self.rank < 13:
+            return self.rank + 1
+        else:
+            return self.rank

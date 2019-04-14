@@ -6,6 +6,9 @@ from Player import Player
 
 class PreFarmer(Player):
 	def __init__(self):
+		Player.__init__(self)
 		pass
 
-	def 
+	def __init__(self):
+		pass
+

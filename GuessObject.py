@@ -4,4 +4,5 @@
 ############################################
 
 class GuessObject(object):
-	def __init__(self):
+	def __init__(self,player):
+		self.player = player

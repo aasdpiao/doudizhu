@@ -9,4 +9,6 @@ class Landlord(Player):
 		pass
 
 	def GetOutCardList(self):
+		pass
+
 		

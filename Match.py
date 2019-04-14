@@ -33,11 +33,13 @@ class Match(object):
         print("===========================landlord_cards=======================")
         ShowCard(landlord_cards)
         self.game_status = 1
-        # while self.game_status == 1:
-        #     if self.landlord.CallLandlord():
-        #         self.game_status = 2
-        #         self.landlord.AddBottomCardList(landlord_cards)
-        #     self.landlord = self.landlord.GetNextPlayer()
+        self.game_score = 0
+        while self.game_status == 1:
+            if self.landlord.CallLandlord(self.game_score):
+                self.game_status = 2
+                self.game_score = self.landlord.GetCallScore()
+                self.landlord.AddBottomCardList(landlord_cards)
+            self.landlord = self.landlord.GetNextPlayer()
 
 
 if __name__ == "__main__":
