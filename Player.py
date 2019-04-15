@@ -22,6 +22,7 @@ class Player(object):
         self.GuessCarder = GuessCarder(self)
         self.HandCardCount = 0
         self.CallSocre = 0
+        self.FirstLandlord = 0
 
     def __str__(self):
         str = ""
@@ -29,11 +30,23 @@ class Player(object):
             print(card)
         return str
 
+    def SetFirstCallLord(self):
+        self.FirstLandlord = 1
+
     def GetCallScore(self):
         return self.CallSocre
 
     def GetRobotId(self):
         return self.RobotId
+
+    def IsLandlorder(self):
+        return self.RobotId == POSITION.LANDLORD
+
+    def IsPreFarmer(self):
+        return self.RobotId == POSITION.PREFARMER
+
+    def IsNextFarmer(self):
+        return self.RobotId == POSITION.NEXTFARMER
 
     def GetCardCounter(self):
         return self.CardCounter
@@ -65,6 +78,9 @@ class Player(object):
     def SetDeskStation(self, desk_station):
         self.desk_station = desk_station
 
+    def GetDeskStation(self):
+        return self.desk_station
+
     #设置手上牌数据 游戏开始
     def SetCardList(self, cards):
         self.cards = cards
@@ -82,6 +98,7 @@ class Player(object):
         card_list = cards.GetCards()
         counter = [card for card in card_list if card.index not in [x.index for x in self.cards]]
         self.CardCounter.SetCardData(counter)
+        self.CardCounter.ParseHandCardData()
 
     #获取手中的牌
     def GetHandCardList(self):
@@ -105,17 +122,17 @@ class Player(object):
 
     def CalucalateCallSocre(self):
         Res = 0
-        BombCount = self.GetBombCount()
+        BombCount = self.GetCardParse().GetBombCount()
         if BombCount > 0:
-            Res += BombCount * 8 + math.power(2.0,BombCount-1) * 6
+            Res += BombCount * 8 + math.power(2.0, BombCount-1) * 6
         return Res
 
     #叫分
     def CallScore(self):
         res = 0
         Score = self.CalucalateCallSocre()
-        Card2Count = self.GetCardValueCount(CARDVALUE.CARD_2)
-        KingCount = self.GetKingCount()
+        Card2Count = self.GetCardParse().GetCardValueCount(CARDVALUE.CARD_2)
+        KingCount = self.GetCardParse().GetKingCount()
         if KingCount == 2:
             if Card2Count > 0:
                 if Score >= 15:
@@ -194,40 +211,30 @@ class Player(object):
 
     #叫地主
     def CallLandlord(self,score):
-        return True
-        # int KingCount=m_CardData.GetKingCount();//王的个数
-        # int Card2Count=m_CardData.GetCardValueCount(CARD_2);
-        # if (CurScore==0)
-        # {
-        #     if (m_CallScore>1||KingCount>0||Card2Count>=2)
-        #     {
-        #         return 1;
-        #     }
-        # }
-        # else if (CurScore==1)
-        # {
-        #     if (m_CallScore>2||m_CallScore==2&&(KingCount>0||Card2Count>2))
-        #     {
-        #         return 1;
-        #     }
-        # }
-        # else if (CurScore==2)
-        # {
-        #     if (m_CallScore>2&&KingCount>0||m_CallScore==2&&(KingCount>1||KingCount>0&&Card2Count>=2))
-        #     {
-        #         return 1;
-        #     }
-        # }
-        # else 
-        # {
-        #     if (m_CallScore>2&&KingCount>0&&(m_CardData.HaveBigKing()||Card2Count>1))
-        #     {
-        #         return 1;
-        #     }
-        # }
+        self.FirstLandlord += 1
+        if self.FirstLandlord >= 3:
+            self.CallSocre = score
+            return True
+        Card2Count = self.GetCardParse().GetCardValueCount(CARDVALUE.CARD_2)
+        KingCount = self.GetCardParse().GetKingCount()
+        CallScore = self.CallScore()
+        if score == 0:
+            if CallScore > 1 or KingCount > 0 or Card2Count > 2:
+                self.CallSocre = 1
+                return False
+        elif score == 1:
+            if CallScore > 2 or CallScore == 2 and (KingCount > 0 and Card2Count >= 2):
+                self.CallSocre = 2
+                return False
+        elif score == 2:
+            if CallScore > 2 or KingCount ==2 and (Card2Count >= 2):
+                self.CallSocre = 3
+                return True
+        else:
+            if CallScore > 2 and KingCount > 0 and(Card2Count > 1):
+                self.CallSocre = 3
+                return True
 
-        # return 0;
-        pass
 
     #是否加倍
     def IsAddPoint(self):
@@ -264,7 +271,7 @@ class Player(object):
             bigest_node = card_node_list[-1]
             if not bigest_node:
                 continue
-            if self.CheckBigest(card_node,card_type,card_parse):
+            if self.CheckBigest(bigest_node,card_type,card_parse):
                 self.OutCard.SetWin(card_type,True)
                 self.OutCard.ExitBig(card_type,True)
 
@@ -291,7 +298,7 @@ class Player(object):
         card_info += "]"
         print(card_info)
 
-    def AddBottomCardList(self,cards):
+    def AddBottomCardList(self, cards):
         self.cards.extend(cards)
 
     def GetOutCardList_First(self):

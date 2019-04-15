@@ -29,11 +29,11 @@ class CardParse(object):
     def InitCardDataWithCardList(self):
         pass
 
-    def AddCardData(self):
-        pass
+    def AddCardData(self,cards):
+        self.cards.extend(cards)
 
     def GetCardData(self):
-        pass
+        return self.cards
 
     def GetBigCardData(self):
         pass
@@ -287,7 +287,27 @@ class CardParse(object):
 
     #获取最长的顺子
     def GetLongProgress(self):
-        pass
+        self.CardPerser()
+        progress = []
+        max_count = 0
+        card_rank = 0
+        for card in self.card_order_info:
+            if card == self.card_order_info[0]:
+                progress.append(card)
+            elif progress[-1].rank == card.rank - 1:
+                progress.append(card)
+            else:
+                if len(progress) >= 5:
+                    if len(progress) > max_count:
+                        max_count = len(progress)
+                        card_rank = progress[0].rank
+                progress = [card]
+        # 最后一轮
+        if len(progress) >= 5:
+            if len(progress) > max_count:
+                max_count = len(progress)
+                card_rank = progress[0].rank
+        return max_count,card_rank
 
     def HaveLinkProgress(self):
         pass

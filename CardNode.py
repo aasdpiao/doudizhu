@@ -17,6 +17,9 @@ class CardNode(object):
         self.cards.extend(cards)
         self.card_count = len(set([card.rank for card in cards]))
 
+    def GetCards(self):
+        return self.cards
+
     def SetCardType(self,card_type):
         self.card_type = card_type
 

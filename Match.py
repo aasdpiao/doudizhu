@@ -22,6 +22,7 @@ class Match(object):
         self.players[1].SetNextPlayer(self.players[2])
         self.players[2].SetNextPlayer(self.players[0])
         self.landlord = self.players[0]
+        self.landlord.SetFirstCallLord()
 
 
     def GameStart(self):
@@ -36,11 +37,12 @@ class Match(object):
         self.game_score = 0
         while self.game_status == 1:
             if self.landlord.CallLandlord(self.game_score):
-                self.game_status = 2
                 self.game_score = self.landlord.GetCallScore()
                 self.landlord.AddBottomCardList(landlord_cards)
+                self.game_status = 2
             self.landlord = self.landlord.GetNextPlayer()
 
+        print(self.landlord.GetDeskStation())
 
 if __name__ == "__main__":
     match = Match(random)

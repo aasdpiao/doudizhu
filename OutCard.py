@@ -2,7 +2,8 @@
 ############################################
 #              出牌列表                     #
 ############################################
-from Common import OUTTYPE,CARDTYPE
+from Common import OUTTYPE,CARDTYPE,CARDVALUE
+from CardParse import CardParse
 
 class OutCard(object):
 	def __init__(self,player):
@@ -10,7 +11,7 @@ class OutCard(object):
 		self.OutCardNodeList = {}
 		self.Active = False
 		self.ParseAgain = False
-		self.ExitBig = False
+		self.ExitBig = {}
 		self.OutFinish = False
 		self.ParseAgain = False
 		self.ParseAgain = False
@@ -37,6 +38,8 @@ class OutCard(object):
 		if out_type == OUTTYPE.BOMB:
 			pass
 
+	def SetWin(self,card_type,isBig):
+		self.ExitBig[card_type] = isBig
 
 	def PushOutCardNode(self,out_node):
 		card_node = out_node.GetCardNode()
@@ -100,184 +103,28 @@ class OutCard(object):
 		self.AmendOutCardNode_Progress_Pair_Single()
 		self.AmendOutCardNode_LinkPair_Pair_Three()
 
-
-	'''
-	void CBaseRobotAction::AmendOutCardNode_Bomb_Single()
-	{
-		if (m_OutCardNodeHead.NodeCount(CARDTYPE_NODE_BOMB)<=0||m_OutCardNodeHead.GetSingleCardCount()<3)
-		{//不存在炸弹或者单牌不过多
-			return ;
-		}
-
-		BYTE bSingleCardList[CARDCOUNT_PLAYER]={0};
-		int SingleCount=m_OutCardNodeHead.GetSingleCardCount();
-		memcpy(bSingleCardList,m_OutCardNodeHead.mList[CARDTYPE_NODE_SINGLECARD]->Node->bCardList,SingleCount);
-
-		OutCardNodePtr CurNode=m_OutCardNodeHead.mList[CARDTYPE_NODE_BOMB],pNode=NULL;
-
-		CCardParse Parse;
-		Parse.InitCardDataWithCardList(bSingleCardList,SingleCount);
-
-		//把对子也压入列表中
-		OutCardNodePtr CurPairNode=m_OutCardNodeHead.mList[CARDTYPE_NODE_PAIR];
-		while(CurPairNode!=NULL)
-		{
-			Parse.AddCardData(CurPairNode->Node->GetCardValue());
-			CurPairNode=CurPairNode->next;
-		}
-		BYTE bCardList[CARDCOUNT_PLAYER]={0};
-		int CardCount=0;
-		int PairCount=0;
-		bool bFlag=false;
-
-		if (GetRivalHandCardCount()<=2)
-		{
-			//对手手中只有一张牌
-			if (IsLandlorder()||IsPreFarmer())
-			{
-				bFlag=true;
-			}
-		}
-		while(CurNode!=NULL)
-		{
-			Parse.AddCardData(CurNode->Node->bCardList,1);
-			CardCount=Parse.GetLongProgress(bCardList);
-			if (bFlag&&CardCount>=5||CardCount>6||(CardCount>=5&&CompareCard(bCardList[0],CARD_7)>0&&m_CardData.GetBigCard2Count(false)<3))
-			{
-				//判断对子 有多少个
-				PairCount=0;
-				CurPairNode=m_OutCardNodeHead.mList[CARDTYPE_NODE_PAIR];
-				while(CurPairNode!=NULL)
-				{
-					for (int i=0;i<CardCount;i++)
-					{
-						if (bCardList[i]==CurPairNode->Node->GetCardValue(0)||bCardList[i]==CurPairNode->Node->GetCardValue(1))
-						{
-							PairCount++;
-							break;
-						}
-					}
-					CurPairNode=CurPairNode->next;
-				}
-				if (PairCount>0)
-				{
-					if (CardCount-1-PairCount<2*PairCount)
-					{
-						CurNode=CurNode->next;
-						continue;
-					}
-					else
-					{
-						//吧对子的另一张压入单牌列表中
-						CurPairNode=m_OutCardNodeHead.mList[CARDTYPE_NODE_PAIR];
-						bool bFlag=false;
-						while(CurPairNode!=NULL)
-						{
-							bFlag=false;
-							for (int i=0;i<SingleCount;i++)
-							{
-								if (bSingleCardList[i]==CurPairNode->Node->GetCardValue())
-								{
-									bSingleCardList[SingleCount++]=CurPairNode->Node->GetCardValue(0);
-									bFlag=true;
-									break;
-								}
-							}
-							if (bFlag)
-							{
-								CurPairNode=m_OutCardNodeHead.RemoveNode(CARDTYPE_NODE_PAIR,CurPairNode);
-							}
-							else
-							{
-								CurPairNode=CurPairNode->next;
-							}
-
-						}
-					}
-				}
-
-				//可以吧炸弹分解成三条 和 组成顺子
-				//分解成三条
-				pNode=NULL;
-				CreateOutCardNode(&CurNode->Node->bCardList[1],3,CARDTYPE_NODE_THREEITEM,1,pNode);
-				m_OutCardNodeHead.Push(pNode,CARDTYPE_NODE_THREEITEM);
-
-				//组成顺子
-				pNode=NULL;
-				CreateOutCardNode(bCardList,CardCount,CARDTYPE_NODE_PROGRESS,CardCount,pNode);
-				m_OutCardNodeHead.Push(pNode,CARDTYPE_NODE_PROGRESS);
-
-				//判断对子是否在顺子中  如果在 则把对子另一个牌压入单牌列表  并删除对子节点
-				CurPairNode=m_OutCardNodeHead.mList[CARDTYPE_NODE_PAIR];
-				bool bFlag=false;
-				while(CurPairNode!=NULL)
-				{
-					bFlag=false;
-					for (int i=0;i<CardCount;i++)
-					{
-						if (bCardList[i]==CurPairNode->Node->GetCardValue())
-						{
-							bSingleCardList[SingleCount++]=CurPairNode->Node->bCardList[1];
-							bFlag=true;
-							break;
-						}
-					}
-					if (bFlag)
-					{
-						CurPairNode=m_OutCardNodeHead.RemoveNode(CARDTYPE_NODE_PAIR,CurPairNode);
-					}
-					else
-					{
-						CurPairNode=CurPairNode->next;
-					}
-				}
-				//删除单牌
-				for (int i=0;i<SingleCount;i++)
-				{
-					for (int j=0;j<CardCount;j++)
-					{
-						if (ValidCard(bCardList[j])&&bCardList[j]!=CurNode->Node->bCardList[0])
-						{
-							if (bSingleCardList[i]==bCardList[j])
-							{
-								bSingleCardList[i]=0;
-							}
-						}
-					}
-				}
-
-				Parse.SetCardData(CurNode->Node->bCardList,1);
-				//删除炸弹节点
-				CurNode=m_OutCardNodeHead.RemoveNode(CARDTYPE_NODE_BOMB,CurNode);
-
-				continue;
-			}
-
-			Parse.SetCardData(CurNode->Node->bCardList,1);
-			CurNode=CurNode->next;
-		}
-
-		//保存单牌
-		CardCount=0;
-		for (int i=0;i<SingleCount;i++)
-		{
-			if (ValidCard(bSingleCardList[i]))
-			{
-				m_OutCardNodeHead.mList[CARDTYPE_NODE_SINGLECARD]->Node->bCardList[CardCount++]=bSingleCardList[i];
-			}
-		}
-		m_OutCardNodeHead.mList[CARDTYPE_NODE_SINGLECARD]->Node->mCardCount=CardCount;
-
-	}
-	'''
 	def AmendOutCardNode_Bomb_Single(self):
 		if self.NodeCount(CARDTYPE.NODE_BOMB) == 0 or self.GetSingleCardCount() < 3:
 			return
 		node_list = self.OutCardNodeList.get(CARDTYPE.NODE_SINGLECARD, [])
 		card_node = node_list[0]
+		card_parse = CardParse(self.player)
+		card_parse.SetCardData(card_node.GetCardNode().GetCards())
 		guess_carder = self.player.GetGuessCarder()
+		card_count = 0
+		pair_count = 0
+		bflag = False
 		if guess_carder.GetRivalHandCardCount() <= 2:
-			pass
+			if(self.player.IsLandlorder() or self.player.IsPreFarmer()):
+				bflag = True
+		node_list = self.OutCardNodeList.get(CARDTYPE.NODE_BOMB, [])
+		for node in node_list:
+			card = node.GetCardNode().GetCardValue()
+			card_parse.AddCardData([card])
+			progress_count,card_rank = card_parse.GetLongProgress()
+			if (bflag and progress_count >= 5 or card_count>=6 and card_rank > 5 and self.player.GetCardParse().GetCardValueCount(CARDVALUE.CARD_2) < 3):
+				pass
+
 
 	'''
 	void CBaseRobotAction::AmendOutCardNode_Progress_Pair()
